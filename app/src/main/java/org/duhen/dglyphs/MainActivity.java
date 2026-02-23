@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView textCurrentCallStyle, textCurrentNotifStyle, textCurrentFlipStyle, textSleepTime;
     private MaterialSwitch switchSleepMode, switchAll, switchFlip;
     private Slider slider;
+    private final android.os.Handler previewHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private Runnable previewRunnable;
 
     public static final String PREF_BLINK_STYLE = "glyph_blink_style";
 
@@ -136,10 +138,24 @@ public class MainActivity extends AppCompatActivity {
 
         slider.addOnChangeListener((s, value, fromUser) -> {
             if (fromUser) {
-                quickTick(10, 50);
-                currentBrightness = mapPositionToBrightness(value);
-                prefs.edit().putInt("brightness", currentBrightness).apply();
-                if (isMasterAllowed) previewBrightness(currentBrightness);
+                int brightness = mapPositionToBrightness(value);
+
+                if (brightness != currentBrightness) {
+                    quickTick(10, 50);
+                    currentBrightness = brightness;
+                    prefs.edit().putInt("brightness", currentBrightness).apply();
+
+                    if (isMasterAllowed) {
+                        if (previewRunnable != null) {
+                            previewHandler.removeCallbacks(previewRunnable);
+                        }
+
+                        updateHardware(currentBrightness);
+
+                        previewRunnable = () -> updateHardware(0);
+                        previewHandler.postDelayed(previewRunnable, 1500);
+                    }
+                }
             }
         });
     }
