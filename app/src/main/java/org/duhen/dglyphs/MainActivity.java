@@ -17,8 +17,6 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
-import com.google.android.material.timepicker.MaterialTimePicker;
-import com.google.android.material.timepicker.TimeFormat;
 import com.topjohnwu.superuser.Shell;
 
 public class MainActivity extends AppCompatActivity {
@@ -96,7 +94,10 @@ public class MainActivity extends AppCompatActivity {
         cardNotifications.setOnClickListener(v -> showStyleDialog(R.string.card_notifications, "glyph_blink_style_idx", PREF_BLINK_STYLE));
         cardRingtones.setOnClickListener(v -> showStyleDialog(R.string.card_ringtones, "call_style_idx", "call_style_value"));
         cardFlipStyle.setOnClickListener(v -> showStyleDialog(R.string.flip_to_glyph_label, "flip_style_idx", "flip_style_value"));
-        cardSleepTime.setOnClickListener(v -> showTimeRangePicker());
+        cardSleepTime.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SleepModeActivity.class);
+            startActivity(intent);
+        });
 
         switchSleepMode.setOnCheckedChangeListener((v, isChecked) -> {
             quickTick(20, 100);
@@ -237,10 +238,6 @@ public class MainActivity extends AppCompatActivity {
         return b >= 4095 ? 4f : b >= 2048 ? 3f : b >= 1024 ? 2f : 1f;
     }
 
-    private void previewBrightness(int b) {
-        new Thread(() -> { updateHardware(b); try { Thread.sleep(1500); } catch (Exception ignored) {} updateHardware(0); }).start();
-    }
-
     private void showRootError() {
         new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.root_error_title).setMessage(R.string.root_error_message)
@@ -252,20 +249,9 @@ public class MainActivity extends AppCompatActivity {
         textSleepTime.setText(prefs.getString("sleep_start", "23:00") + " - " + prefs.getString("sleep_end", "07:00"));
     }
 
-    private void showTimeRangePicker() {
-        int startH = Integer.parseInt(prefs.getString("sleep_start", "23:00").split(":")[0]);
-        int startM = Integer.parseInt(prefs.getString("sleep_start", "23:00").split(":")[1]);
-
-        MaterialTimePicker sp = new MaterialTimePicker.Builder().setTimeFormat(TimeFormat.CLOCK_24H).setHour(startH).setMinute(startM).setTitleText(R.string.sleep_picker_start).build();
-        sp.addOnPositiveButtonClickListener(v -> {
-            String startTime = String.format("%02d:%02d", sp.getHour(), sp.getMinute());
-            MaterialTimePicker ep = new MaterialTimePicker.Builder().setTimeFormat(TimeFormat.CLOCK_24H).setHour(7).setMinute(0).setTitleText(R.string.sleep_picker_end).build();
-            ep.addOnPositiveButtonClickListener(v2 -> {
-                prefs.edit().putString("sleep_start", startTime).putString("sleep_end", String.format("%02d:%02d", ep.getHour(), ep.getMinute())).apply();
-                updateSleepTimeLabel();
-            });
-            ep.show(getSupportFragmentManager(), "sleep_end");
-        });
-        sp.show(getSupportFragmentManager(), "sleep_start");
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupInitialState();
     }
 }
