@@ -50,4 +50,5 @@
     <string name="dialog_permission_call_message">Это необходимо для работы подсветки во время входящего вызова.</string>
     <string name="btn_settings">Настройки</string>
     <string name="btn_grant">Разрешить</string>
+    <string name="warning">Glyph Interface может быть небезопасен для больных эпилепсией и другими заболеваниями, сопровождающимися чувствительностью к свету.</string>
 </resources>
