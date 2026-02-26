@@ -34,6 +34,27 @@ public class GlyphEffects {
                 }
                 break;
 
+            case "nos_breath":
+                flash(GlyphManager.Glyph.DOT, brightness, 50, vibrator);
+                vibrate(vibrator, 15);
+                GlyphManager.setBrightness(GlyphManager.Glyph.LINE, brightness);
+                SystemClock.sleep(60);
+                vibrate(vibrator, 15);
+                GlyphManager.setBrightness(GlyphManager.Glyph.MAIN, brightness);
+                GlyphManager.setBrightness(GlyphManager.Glyph.LINE, 0);
+                SystemClock.sleep(80);
+                vibrate(vibrator, 15);
+                GlyphManager.setBrightness(GlyphManager.Glyph.DIAGONAL, brightness);
+                GlyphManager.setBrightness(GlyphManager.Glyph.MAIN, 0);
+                SystemClock.sleep(60);
+                vibrate(vibrator, 15);
+                GlyphManager.setBrightness(GlyphManager.Glyph.CAMERA, brightness);
+                SystemClock.sleep(100);
+                GlyphManager.setBrightness(GlyphManager.Glyph.DIAGONAL, 0);
+                SystemClock.sleep(130);
+                GlyphManager.setBrightness(GlyphManager.Glyph.CAMERA, 0);
+                break;
+
             // calls
             // ported from nos
             // some of them suck

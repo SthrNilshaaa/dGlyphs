@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String PREF_BLINK_STYLE = "glyph_blink_style";
 
     // if u gonna add extra styles, begin from here
-    private final String[] notifStyleValues = {"static", "breath", "blink", "oi", "nope", "why", "bulb_one", "bulb_two", "guiro", "squiggle"};
+    private final String[] notifStyleValues = {"static", "breath", "nos_breath", "blink", "oi", "nope", "why", "bulb_one", "bulb_two", "guiro", "squiggle"};
     private final String[] callStyleValues = {"static", "blink", "pneumatic", "abra", "squirrels", "snaps", "radiate", "tennis", "plot", "scribble"};
 
     @Override

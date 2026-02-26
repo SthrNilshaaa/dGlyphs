@@ -14,6 +14,7 @@
     <string-array name="notif_style_names">
         <item>Статичный</item>
         <item>Пульс</item>
+        <item>Nothing пульс</item>
         <item>Быстрое мигание</item>
         <item>oi!</item>
         <item>nope</item>

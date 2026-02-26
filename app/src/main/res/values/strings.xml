@@ -14,6 +14,7 @@
 	<string-array name="notif_style_names">
         <item>Static</item>
         <item>Pulse</item>
+        <item>Nothing Pulse</item>
         <item>Quick Blink</item>
         <item>oi!</item>
         <item>nope</item>
