@@ -17,23 +17,26 @@
         app:liftOnScrollTargetViewId="@id/nestedScroll">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             app:collapsedTitleTextAppearance="@style/TextAppearance.CollapsingHeaderSmall"
             app:expandedTitleMarginStart="22dp"
-            app:expandedTitleMarginBottom="24dp"
+            app:expandedTitleMarginBottom="28dp"
             app:expandedTitleTextAppearance="@style/TextAppearance.CollapsingHeader"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:title="@string/main_header"
             app:titleCollapseMode="fade"
-            app:contentScrim="?attr/colorSurface">
+            app:contentScrim="?attr/colorSurface"
+            app:scrimAnimationDuration="300">
 
+            <!-- Spacer задаёт высоту раскрытого состояния -->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="152dp"
+                android:layout_height="172dp"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.5" />
+                app:layout_collapseParallaxMultiplier="0.3" />
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
@@ -119,36 +122,44 @@
                         app:cardCornerRadius="28dp"
                         app:strokeWidth="0dp">
 
-                        <LinearLayout
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical"
                             android:padding="20dp">
 
                             <ImageView
+                                android:id="@+id/iconRingtones"
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentStart="true"
                                 android:src="@drawable/ic_music_note"
                                 app:tint="?attr/colorOnSurface" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:text="@string/card_ringtones"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="16sp" />
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentStart="true"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/textCurrentCallStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Static"
-                                android:textColor="?attr/colorOutline"
-                                android:textSize="13sp" />
-                        </LinearLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/card_ringtones"
+                                    android:textColor="?attr/colorOnSurface"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/textCurrentCallStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="Static"
+                                    android:textColor="?attr/colorOutline"
+                                    android:textSize="13sp" />
+                            </LinearLayout>
+                        </RelativeLayout>
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
@@ -161,36 +172,44 @@
                         app:cardCornerRadius="28dp"
                         app:strokeWidth="0dp">
 
-                        <LinearLayout
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical"
                             android:padding="20dp">
 
                             <ImageView
+                                android:id="@+id/iconNotifications"
                                 android:layout_width="28dp"
                                 android:layout_height="28dp"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentStart="true"
                                 android:src="@drawable/ic_notif"
                                 app:tint="?attr/colorOnSurface" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:text="@string/card_notifications"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="16sp" />
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentStart="true"
+                                android:orientation="vertical">
 
-                            <TextView
-                                android:id="@+id/textCurrentNotifStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="2dp"
-                                android:text="Static"
-                                android:textColor="?attr/colorOutline"
-                                android:textSize="13sp" />
-                        </LinearLayout>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/card_notifications"
+                                    android:textColor="?attr/colorOnSurface"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/textCurrentNotifStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="Static"
+                                    android:textColor="?attr/colorOutline"
+                                    android:textSize="13sp" />
+                            </LinearLayout>
+                        </RelativeLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
             </LinearLayout>
