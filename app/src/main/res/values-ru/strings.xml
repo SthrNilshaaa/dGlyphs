@@ -11,6 +11,7 @@
     <string name="pref_file">Настройки Glyph</string>
     <string name="style_title">Стиль уведомлений</string>
     <string name="cancel">Отмена</string>
+    <string name="apply">Применить</string>
     <string-array name="notif_style_names">
         <item>Статичный</item>
         <item>Пульс</item>

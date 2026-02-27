@@ -163,6 +163,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void showStyleDialog(int titleRes, String idxKey, String valKey) {
         int currentIdx = prefs.getInt(idxKey, 0);
+        final int[] selectedIdx = {currentIdx};
+
         boolean isCall = valKey.equals("call_style_value");
         int namesArrayRes = isCall ? R.array.call_style_names : R.array.notif_style_names;
         String[] values = isCall ? callStyleValues : notifStyleValues;
@@ -170,11 +172,22 @@ public class MainActivity extends AppCompatActivity {
         new MaterialAlertDialogBuilder(this)
                 .setTitle(titleRes)
                 .setSingleChoiceItems(namesArrayRes, currentIdx, (dialog, which) -> {
-                    String selected = values[which];
-                    prefs.edit().putInt(idxKey, which).putString(valKey, selected).apply();
+                    selectedIdx[0] = which;
+                    if (isMasterAllowed) {
+                        new Thread(() -> GlyphEffects.run(values[which], prefs.getInt("brightness", 2048), vibrator)).start();
+                    }
+                })
+                .setPositiveButton(R.string.apply, (dialog, which) -> {
+                    int finalIdx = selectedIdx[0];
+                    String selectedVal = values[finalIdx];
+
+                    prefs.edit()
+                            .putInt(idxKey, finalIdx)
+                            .putString(valKey, selectedVal)
+                            .apply();
+
                     updateStyleLabels();
-                    if (isMasterAllowed) new Thread(() -> GlyphEffects.run(selected, prefs.getInt("brightness", 2048), vibrator)).start();
-                    dialog.dismiss();
+                    quickTick(15, 100);
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .show();
