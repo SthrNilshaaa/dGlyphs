@@ -19,11 +19,11 @@ public class SleepGuard {
             }
 
             String[] s = prefs.getString("sleep_start", "23:00").split(":");
-            String[] e = prefs.getString("sleep_end",   "07:00").split(":");
+            String[] e = prefs.getString("sleep_end", "07:00").split(":");
             int startMin = Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]);
-            int endMin   = Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1]);
+            int endMin = Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1]);
             Calendar now = Calendar.getInstance();
-            int nowMin   = now.get(Calendar.HOUR_OF_DAY) * 60 + now.get(Calendar.MINUTE);
+            int nowMin = now.get(Calendar.HOUR_OF_DAY) * 60 + now.get(Calendar.MINUTE);
 
             return startMin < endMin
                     ? (nowMin >= startMin && nowMin <= endMin)

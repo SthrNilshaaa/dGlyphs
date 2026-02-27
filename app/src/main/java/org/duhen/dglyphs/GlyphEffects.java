@@ -59,7 +59,8 @@ public class GlyphEffects {
             // ported from nos
             // some of them suck
             case "pneumatic":
-                for (int i = 0; i < 10; i++) flash(GlyphManager.Glyph.LINE, brightness, 40, vibrator);
+                for (int i = 0; i < 10; i++)
+                    flash(GlyphManager.Glyph.LINE, brightness, 40, vibrator);
                 break;
 
             case "abra":
@@ -70,26 +71,31 @@ public class GlyphEffects {
                     flash(GlyphManager.Glyph.DOT, brightness, 80, vibrator);
                     flash(GlyphManager.Glyph.DOT, brightness, 80, vibrator);
                 }
-                for (int i = 0; i < 4; i++) flash(GlyphManager.Glyph.LINE, brightness, 80, vibrator);
+                for (int i = 0; i < 4; i++)
+                    flash(GlyphManager.Glyph.LINE, brightness, 80, vibrator);
                 break;
 
             case "squirrels":
-                for (int i = 0; i < 3; i++) flash(GlyphManager.Glyph.CAMERA, brightness, 50, vibrator);
+                for (int i = 0; i < 3; i++)
+                    flash(GlyphManager.Glyph.CAMERA, brightness, 50, vibrator);
                 flash(GlyphManager.Glyph.MAIN, brightness, 100, vibrator);
                 flash(GlyphManager.Glyph.LINE, brightness, 100, vibrator);
                 break;
 
             case "snaps":
-                for (int i = 0; i < 5; i++) flash(GlyphManager.Glyph.DOT, brightness, 150, vibrator);
+                for (int i = 0; i < 5; i++)
+                    flash(GlyphManager.Glyph.DOT, brightness, 150, vibrator);
                 break;
 
             case "radiate":
                 flash(GlyphManager.Glyph.LINE, brightness, 60, vibrator);
-                for (int i = 0; i < 7; i++) flash(GlyphManager.Glyph.MAIN, brightness, 50, vibrator);
+                for (int i = 0; i < 7; i++)
+                    flash(GlyphManager.Glyph.MAIN, brightness, 50, vibrator);
                 break;
 
             case "tennis":
-                for (int i = 0; i < 3; i++) flash(GlyphManager.Glyph.LINE, brightness, 60, vibrator);
+                for (int i = 0; i < 3; i++)
+                    flash(GlyphManager.Glyph.LINE, brightness, 60, vibrator);
                 flash(GlyphManager.Glyph.DOT, brightness, 80, vibrator);
                 flash(GlyphManager.Glyph.LINE, brightness, 80, vibrator);
                 flash(GlyphManager.Glyph.DOT, brightness, 80, vibrator);
@@ -125,7 +131,8 @@ public class GlyphEffects {
                 flash(GlyphManager.Glyph.LINE, brightness, 70, vibrator);
                 flash(GlyphManager.Glyph.DOT, brightness, 70, vibrator);
 
-                for (int i = 0; i < 3; i++) flash(GlyphManager.Glyph.LINE, brightness, 70, vibrator);
+                for (int i = 0; i < 3; i++)
+                    flash(GlyphManager.Glyph.LINE, brightness, 70, vibrator);
 
                 for (int i = 0; i < 2; i++) {
                     vibrate(vibrator, 20);
@@ -137,7 +144,8 @@ public class GlyphEffects {
                     SystemClock.sleep(70);
                 }
 
-                for (int i = 0; i < 2; i++) flash(GlyphManager.Glyph.LINE, brightness, 120, vibrator);
+                for (int i = 0; i < 2; i++)
+                    flash(GlyphManager.Glyph.LINE, brightness, 120, vibrator);
                 break;
 
             // notifications

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.card.MaterialCardView;
@@ -25,25 +26,22 @@ import com.topjohnwu.superuser.Shell;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String PREF_BLINK_STYLE = "glyph_blink_style";
+    private final android.os.Handler previewHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    // if u gonna add extra styles, begin from here
+    private final String[] notifStyleValues = {"static", "breath", "nos_breath", "blink", "oi", "nope", "why", "bulb_one", "bulb_two", "guiro", "squiggle"};
+    private final String[] callStyleValues = {"static", "blink", "pneumatic", "abra", "squirrels", "snaps", "radiate", "tennis", "plot", "scribble"};
     private SharedPreferences prefs;
     private Vibrator vibrator;
     private boolean isMasterAllowed;
     private int currentBrightness;
-
     private MaterialCardView cardNotifications, cardRingtones, cardFlipStyle, cardTurnOff, cardSleepTime, cardBrightness;
     private TextView textCurrentCallStyle, textCurrentNotifStyle, textCurrentFlipStyle, textSleepTime;
     private MaterialSwitch switchSleepMode, switchAll, switchFlip, switchBattery;
     private Slider slider;
-    private final android.os.Handler previewHandler = new android.os.Handler(android.os.Looper.getMainLooper());
     private Runnable previewRunnable;
     private ImageView spacewar;
     private MaterialSwitch switchLockscreenOnly;
-
-    public static final String PREF_BLINK_STYLE = "glyph_blink_style";
-
-    // if u gonna add extra styles, begin from here
-    private final String[] notifStyleValues = {"static", "breath", "nos_breath", "blink", "oi", "nope", "why", "bulb_one", "bulb_two", "guiro", "squiggle"};
-    private final String[] callStyleValues = {"static", "blink", "pneumatic", "abra", "squirrels", "snaps", "radiate", "tennis", "plot", "scribble"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +143,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupLogicSwitches() {
         switchFlip.setChecked(prefs.getBoolean("flip_enabled", false));
-        if (switchFlip.isChecked() && isMasterAllowed) startService(new Intent(this, FlipToGlyphService.class));
+        if (switchFlip.isChecked() && isMasterAllowed)
+            startService(new Intent(this, FlipToGlyphService.class));
 
         switchFlip.setOnCheckedChangeListener((v, isChecked) -> {
             quickTick(20, 100);
@@ -153,7 +152,10 @@ public class MainActivity extends AppCompatActivity {
             if (isMasterAllowed) {
                 Intent intent = new Intent(this, FlipToGlyphService.class);
                 if (isChecked) startService(intent);
-                else { stopService(intent); updateHardware(0); }
+                else {
+                    stopService(intent);
+                    updateHardware(0);
+                }
             }
         });
 
@@ -268,13 +270,17 @@ public class MainActivity extends AppCompatActivity {
     private void updateCardStates(boolean enabled) {
         float alpha = enabled ? 1.0f : 0.5f;
         MaterialCardView[] cards = {cardNotifications, cardRingtones, cardBrightness, cardFlipStyle, cardSleepTime, cardTurnOff};
-        for (MaterialCardView c : cards) { c.setEnabled(enabled); c.setAlpha(alpha); }
+        for (MaterialCardView c : cards) {
+            c.setEnabled(enabled);
+            c.setAlpha(alpha);
+        }
         switchSleepMode.setEnabled(enabled);
         switchBattery.setEnabled(enabled);
     }
 
     private void quickTick(int d, int a) {
-        if (vibrator != null && vibrator.hasVibrator()) vibrator.vibrate(VibrationEffect.createOneShot(d, a));
+        if (vibrator != null && vibrator.hasVibrator())
+            vibrator.vibrate(VibrationEffect.createOneShot(d, a));
     }
 
     private void updateHardware(int val) {
@@ -282,7 +288,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateTile() {
-        try { TileService.requestListeningState(this, new ComponentName(this, MasterTileService.class)); } catch (Exception ignored) {}
+        try {
+            TileService.requestListeningState(this, new ComponentName(this, MasterTileService.class));
+        } catch (Exception ignored) {
+        }
     }
 
     private int mapPositionToBrightness(float p) {

@@ -14,24 +14,20 @@ import android.os.Looper;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
-import java.util.Calendar;
 
 public class FlipToGlyphService extends Service implements SensorEventListener {
 
     public static final String ACTION_NOTIFICATION_GLYPH = "org.duhen.dglyphs.ACTION_NOTIFICATION_GLYPH";
     public static final String ACTION_CALL_GLYPH = "org.duhen.dglyphs.ACTION_CALL_GLYPH";
     public static final String ACTION_STOP_CALL_GLYPH = "org.duhen.dglyphs.ACTION_STOP_CALL_GLYPH";
-
+    private final Handler handler = new Handler(Looper.getMainLooper());
     private SensorManager sensorManager;
     private AudioManager audioManager;
     private Vibrator vibrator;
     private SharedPreferences prefs;
     private PowerManager.WakeLock wakeLock;
-
     private boolean isFaceDown, isProximityCovered, isActive, isRinging;
     private int originalRingerMode;
-
-    private final Handler handler = new Handler(Looper.getMainLooper());
     private Runnable activationRunnable;
 
     @Override
@@ -44,7 +40,8 @@ public class FlipToGlyphService extends Service implements SensorEventListener {
 
         Sensor accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         Sensor prox = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-        if (accel != null) sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_UI);
+        if (accel != null)
+            sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_UI);
         if (prox != null) sensorManager.registerListener(this, prox, SensorManager.SENSOR_DELAY_UI);
 
         wakeLock = ((PowerManager) getSystemService(POWER_SERVICE)).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "dGlyphs:Lock");
@@ -59,9 +56,15 @@ public class FlipToGlyphService extends Service implements SensorEventListener {
 
         if (intent != null && intent.getAction() != null) {
             switch (intent.getAction()) {
-                case ACTION_NOTIFICATION_GLYPH: triggerEffect("glyph_blink_style"); break;
-                case ACTION_CALL_GLYPH: startCallBlinking(); break;
-                case ACTION_STOP_CALL_GLYPH: stopCallBlinking(); break;
+                case ACTION_NOTIFICATION_GLYPH:
+                    triggerEffect("glyph_blink_style");
+                    break;
+                case ACTION_CALL_GLYPH:
+                    startCallBlinking();
+                    break;
+                case ACTION_STOP_CALL_GLYPH:
+                    stopCallBlinking();
+                    break;
             }
         }
         return START_STICKY;
@@ -101,8 +104,10 @@ public class FlipToGlyphService extends Service implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) isFaceDown = event.values[2] < -8.5;
-        else if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) isProximityCovered = event.values[0] < event.sensor.getMaximumRange();
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
+            isFaceDown = event.values[2] < -8.5;
+        else if (event.sensor.getType() == Sensor.TYPE_PROXIMITY)
+            isProximityCovered = event.values[0] < event.sensor.getMaximumRange();
 
         if (isFaceDown && isProximityCovered) {
             if (!isActive && activationRunnable == null) {
@@ -132,8 +137,14 @@ public class FlipToGlyphService extends Service implements SensorEventListener {
         updateHardware(0);
     }
 
-    @Override public void onAccuracyChanged(Sensor sensor, int accuracy) {}
-    @Override public IBinder onBind(Intent intent) { return null; }
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
     @Override
     public void onDestroy() {

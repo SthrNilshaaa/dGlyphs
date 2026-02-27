@@ -38,8 +38,7 @@ public class CallReceiver extends BroadcastReceiver {
             Intent i = new Intent(context, FlipToGlyphService.class);
             i.setAction(FlipToGlyphService.ACTION_CALL_GLYPH);
             context.startService(i);
-        }
-        else if (TelephonyManager.EXTRA_STATE_OFFHOOK.equals(state) ||
+        } else if (TelephonyManager.EXTRA_STATE_OFFHOOK.equals(state) ||
                 TelephonyManager.EXTRA_STATE_IDLE.equals(state)) {
             Intent i = new Intent(context, FlipToGlyphService.class);
             i.setAction(FlipToGlyphService.ACTION_STOP_CALL_GLYPH);
