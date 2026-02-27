@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private final android.os.Handler previewHandler = new android.os.Handler(android.os.Looper.getMainLooper());
     private Runnable previewRunnable;
     private ImageView spacewar;
+    private MaterialSwitch switchLockscreenOnly;
 
     public static final String PREF_BLINK_STYLE = "glyph_blink_style";
 
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         switchSleepMode = findViewById(R.id.switchSleepMode);
         switchAll = findViewById(R.id.switchAll);
         switchFlip = findViewById(R.id.switchFlip);
+        switchLockscreenOnly = findViewById(R.id.switchLockscreenOnly);
         textSleepTime = findViewById(R.id.textSleepTime);
         spacewar = findViewById(R.id.spacewar);
     }
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         slider.setValue(mapBrightnessToPosition(currentBrightness));
         slider.setEnabled(isMasterAllowed);
         switchFlip.setEnabled(isMasterAllowed);
+        switchLockscreenOnly.setChecked(prefs.getBoolean("lockscreen_only", false));
         switchSleepMode.setChecked(prefs.getBoolean("sleep_mode_enabled", false));
         updateStyleLabels();
         updateCardStates(isMasterAllowed);
@@ -106,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
         switchSleepMode.setOnCheckedChangeListener((v, isChecked) -> {
             quickTick(20, 100);
             prefs.edit().putBoolean("sleep_mode_enabled", isChecked).apply();
+        });
+
+        switchLockscreenOnly.setOnCheckedChangeListener((v, isChecked) -> {
+            quickTick(15, 100);
+            prefs.edit().putBoolean("lockscreen_only", isChecked).apply();
         });
 
         setupLogicSwitches();

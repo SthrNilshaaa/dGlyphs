@@ -64,4 +64,6 @@
     <string name="day_friday">F</string>
     <string name="day_saturday">S</string>
     <string name="day_sunday">S</string>
+    <string name="turn_off_label">Только при выкл. экране</string>
+    <string name="turn_off_desc">Glyph индикаторы не будут работать, если телефон разблокирован</string>
 </resources>
