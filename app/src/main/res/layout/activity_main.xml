@@ -45,11 +45,11 @@
 					android:padding="20dp">
 
 					<ImageView
+						android:id="@+id/spacewar"
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
 						android:layout_above="@id/sliderMain"
 						android:layout_marginBottom="16dp"
-						android:alpha="0.6"
 						android:scaleType="centerInside"
 						android:src="@drawable/ic_glyph_outline"
 						app:tint="?attr/colorOnSurface" />

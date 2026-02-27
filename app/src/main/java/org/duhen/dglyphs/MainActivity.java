@@ -10,6 +10,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.service.quicksettings.TileService;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private Slider slider;
     private final android.os.Handler previewHandler = new android.os.Handler(android.os.Looper.getMainLooper());
     private Runnable previewRunnable;
+    private ImageView spacewar;
 
     public static final String PREF_BLINK_STYLE = "glyph_blink_style";
 
@@ -77,10 +79,12 @@ public class MainActivity extends AppCompatActivity {
         switchAll = findViewById(R.id.switchAll);
         switchFlip = findViewById(R.id.switchFlip);
         textSleepTime = findViewById(R.id.textSleepTime);
+        spacewar = findViewById(R.id.spacewar);
     }
 
     private void setupInitialState() {
         switchAll.setChecked(isMasterAllowed);
+        updateOutlineAlpha(slider.getValue());
         slider.setValue(mapBrightnessToPosition(currentBrightness));
         slider.setEnabled(isMasterAllowed);
         switchFlip.setEnabled(isMasterAllowed);
@@ -138,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         slider.addOnChangeListener((s, value, fromUser) -> {
+            updateOutlineAlpha(value);
             if (fromUser) {
                 int brightness = mapPositionToBrightness(value);
 
@@ -260,6 +265,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateSleepTimeLabel() {
         textSleepTime.setText(prefs.getString("sleep_start", "23:00") + " - " + prefs.getString("sleep_end", "07:00"));
+    }
+
+    private void updateOutlineAlpha(float sliderValue) {
+        if (spacewar != null) {
+            float alpha = 0.2f + ((sliderValue - 1) / 3f) * 0.8f;
+            spacewar.setAlpha(alpha);
+        }
     }
 
     @Override
