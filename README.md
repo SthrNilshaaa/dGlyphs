@@ -32,3 +32,6 @@ It was originally created for ported roms that don't have Glyphs.
 
 ## License
 This project is licensed under GPLv3, and all NothingOS related assets are property of Nothing Technology Limited.
+
+## Download
+[<img alt="Get it on GitHub" src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" width="240">](https://github.com/duhenduhen/dGlyphs/releases/latest)
