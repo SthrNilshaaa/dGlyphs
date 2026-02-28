@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Vibrator vibrator;
     private boolean isMasterAllowed;
     private int currentBrightness;
-    private MaterialCardView cardNotifications, cardRingtones, cardFlipStyle, cardTurnOff, cardSleepTime, cardBrightness;
+    private MaterialCardView cardNotifications, cardRingtones, cardFlipStyle, cardTurnOff, cardSleepTime, cardBrightness, cardBattery;
     private TextView textCurrentCallStyle, textCurrentNotifStyle, textCurrentFlipStyle, textSleepTime;
     private MaterialSwitch switchSleepMode, switchAll, switchFlip, switchBattery;
     private Slider slider;
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         cardTurnOff = findViewById(R.id.cardTurnOff);
         cardSleepTime = findViewById(R.id.cardSleepTime);
         cardBrightness = findViewById(R.id.cardBrightness);
+        cardBattery = findViewById(R.id.cardBattery);
         textCurrentCallStyle = findViewById(R.id.textCurrentCallStyle);
         textCurrentNotifStyle = findViewById(R.id.textCurrentNotifStyle);
         textCurrentFlipStyle = findViewById(R.id.textCurrentFlipStyle);
@@ -105,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
         switchLockscreenOnly.setChecked(prefs.getBoolean("lockscreen_only", false));
         switchSleepMode.setChecked(prefs.getBoolean("sleep_mode_enabled", false));
         switchBattery.setChecked(prefs.getBoolean("battery_glyph_enabled", false));
-        switchBattery.setEnabled(isMasterAllowed);
         updateStyleLabels();
         updateCardStates(isMasterAllowed);
         updateSleepTimeLabel();
@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateCardStates(boolean enabled) {
         float alpha = enabled ? 1.0f : 0.5f;
-        MaterialCardView[] cards = {cardNotifications, cardRingtones, cardBrightness, cardFlipStyle, cardSleepTime, cardTurnOff};
+        MaterialCardView[] cards = {cardNotifications, cardRingtones, cardBrightness, cardFlipStyle, cardSleepTime, cardTurnOff, cardBattery};
         for (MaterialCardView c : cards) {
             c.setEnabled(enabled);
             c.setAlpha(alpha);
