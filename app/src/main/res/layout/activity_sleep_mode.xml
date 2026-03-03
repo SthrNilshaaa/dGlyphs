@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/sleep_mode"
-                android:textColor="?attr/colorOnSurface"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 android:textSize="18sp" />
 
             <com.google.android.material.materialswitch.MaterialSwitch
