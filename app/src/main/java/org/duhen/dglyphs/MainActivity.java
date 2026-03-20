@@ -21,7 +21,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
-import com.google.android.material.slider.Slider;
 import com.topjohnwu.superuser.Shell;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private MaterialCardView cardNotifications, cardRingtones, cardFlipStyle, cardTurnOff, cardSleepTime, cardBrightness, cardBattery;
     private TextView textCurrentCallStyle, textCurrentNotifStyle, textSleepTime;
     private MaterialSwitch switchSleepMode, switchAll, switchFlip, switchBattery, switchLockscreenOnly;
-    private Slider slider;
+    private BrightnessSliderView slider;
     private Runnable previewRunnable;
     private ImageView spacewar;
 
