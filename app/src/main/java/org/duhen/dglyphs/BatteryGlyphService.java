@@ -105,6 +105,9 @@ public class BatteryGlyphService extends Service {
     private void playChargingAnimation(boolean wait) {
         if (!prefs.getBoolean("master_allow", false)) return;
         if (SleepGuard.isBlocked(prefs)) return;
+        if (prefs.getBoolean("lockscreen_only", false) && GlyphManager.isUserActive(this)) {
+            return;
+        }
 
         if (animationFuture != null && !animationFuture.isDone()) {
             if (wait) {

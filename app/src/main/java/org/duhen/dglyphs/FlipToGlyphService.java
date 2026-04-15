@@ -140,6 +140,9 @@ public class FlipToGlyphService extends Service implements SensorEventListener {
     }
 
     private void activateFlipMode() {
+        if (prefs.getBoolean("lockscreen_only", false) && GlyphManager.isUserActive(this)) {
+            return;
+        }
         isActive = true;
         activationRunnable = null;
         originalRingerMode = audioManager.getRingerMode();

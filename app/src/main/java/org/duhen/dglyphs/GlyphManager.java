@@ -1,5 +1,9 @@
 package org.duhen.dglyphs;
 
+import android.app.KeyguardManager;
+import android.content.Context;
+import android.os.PowerManager;
+
 import com.topjohnwu.superuser.Shell;
 
 // thanks to myglyph for initial glyph manager impl
@@ -26,6 +30,12 @@ public class GlyphManager {
 
     public static void resetFrame() {
         Shell.cmd("echo 0 > " + PATH_ROOT + "/all_leds_effect").submit();
+    }
+
+    public static boolean isUserActive(Context context) {
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        return pm != null && pm.isInteractive() && km != null && !km.isKeyguardLocked();
     }
 
     public enum Glyph {
