@@ -47,6 +47,19 @@ public class MainActivity extends AppCompatActivity {
     private Runnable previewRunnable;
     private ImageView spacewar;
 
+    private final SharedPreferences.OnSharedPreferenceChangeListener rootPrefListener = (sharedPrefs, key) -> {
+        if ("master_allow".equals(key)) {
+            boolean newValue = sharedPrefs.getBoolean("master_allow", false);
+            runOnUiThread(() -> {
+                if (switchAll != null && switchAll.isChecked() != newValue) {
+                    isMasterAllowed = newValue;
+                    switchAll.setChecked(newValue);
+                    updateCardStates(newValue);
+                }
+            });
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         com.google.android.material.color.DynamicColors.applyToActivityIfAvailable(this);
@@ -304,7 +317,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateTile() {
         try {
-            TileService.requestListeningState(this, new ComponentName(this, MasterTileService.class));
+            TileService.requestListeningState(this,
+                    new ComponentName(this, MasterTileService.class));
+
+            TileService.requestListeningState(this,
+                    new ComponentName(this, GlyphTileService.class));
+
+            TileService.requestListeningState(this,
+                    new ComponentName(this, RandomGlyphTileService.class));
+
         } catch (Exception ignored) {
         }
     }
@@ -355,6 +376,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (isMasterAllowed) setupInitialState();
+        if (prefs != null) {
+            isMasterAllowed = prefs.getBoolean("master_allow", false);
+            setupInitialState();
+            prefs.registerOnSharedPreferenceChangeListener(rootPrefListener);
+        }
     }
 }
