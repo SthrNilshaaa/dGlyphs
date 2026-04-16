@@ -38,6 +38,11 @@ public class GlyphManager {
         return pm != null && pm.isInteractive() && km != null && !km.isKeyguardLocked();
     }
 
+    public static void setRandomEffect(boolean enable) {
+        if (!Shell.getShell().isRoot()) return;
+        Shell.cmd("echo " + (enable ? "1" : "0") + " > " + PATH_ROOT + "/random_leds_effect").submit();
+    }
+
     public enum Glyph {
         CAMERA(PATH_ROOT + "/rear_cam_led_br"),
         DIAGONAL(PATH_ROOT + "/front_cam_led_br"),

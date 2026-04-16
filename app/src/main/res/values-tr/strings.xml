@@ -5,6 +5,7 @@
     <string name="master_switch_label">Glyph Işıkları</string>
     <string name="tile_master_label">Glyphs</string>
     <string name="tile_light_label">Glyph Işığı</string>
+    <string name="tile_random_label">Rastgele Glyphs</string>
     <string name="flip_to_glyph_label">Glyph için Çevir</string>
     <string name="flip_to_glyph_desc">Bildirimleri sessize almak ve Glyph yanıp sönmelerini kullanmak için telefonu yüzüstü bırakın</string>
     <string name="pref_file">Glyph Ayarları</string>

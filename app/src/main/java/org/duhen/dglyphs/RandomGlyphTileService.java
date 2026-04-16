@@ -4,12 +4,12 @@ import android.content.SharedPreferences;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
-public class GlyphTileService extends TileService {
+public class RandomGlyphTileService extends TileService {
 
     private SharedPreferences prefs;
     private final SharedPreferences.OnSharedPreferenceChangeListener prefListener =
             (sharedPreferences, key) -> {
-                if ("master_allow".equals(key) || "is_random_active".equals(key)) {
+                if ("master_allow".equals(key) || "is_glyph_active".equals(key)) {
                     syncTile();
                 }
             };
@@ -35,21 +35,18 @@ public class GlyphTileService extends TileService {
         super.onClick();
         if (prefs == null)
             prefs = getSharedPreferences(getString(R.string.pref_file), MODE_PRIVATE);
-
-        if (!prefs.getBoolean("master_allow", false) || prefs.getBoolean("is_random_active", false)) {
+        if (!prefs.getBoolean("master_allow", false) || prefs.getBoolean("is_glyph_active", false)) {
             syncTile();
             return;
         }
-
         Tile tile = getQsTile();
         if (tile == null) return;
 
-        boolean currentActive = prefs.getBoolean("is_glyph_active", false);
+        boolean currentActive = prefs.getBoolean("is_random_active", false);
         boolean newState = !currentActive;
 
-        prefs.edit().putBoolean("is_glyph_active", newState).apply();
-        updateHardware(newState ? prefs.getInt("brightness", 2048) : 0);
-
+        prefs.edit().putBoolean("is_random_active", newState).apply();
+        GlyphManager.setRandomEffect(newState);
         tile.setState(newState ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
         tile.updateTile();
     }
@@ -59,32 +56,25 @@ public class GlyphTileService extends TileService {
             prefs = getSharedPreferences(getString(R.string.pref_file), MODE_PRIVATE);
 
         boolean isAllowed = prefs.getBoolean("master_allow", false);
-        boolean isRandomActive = prefs.getBoolean("is_random_active", false);
-        boolean isMeActive = prefs.getBoolean("is_glyph_active", false);
+        boolean isGlyphActive = prefs.getBoolean("is_glyph_active", false);
+        boolean isMeActive = prefs.getBoolean("is_random_active", false);
 
         Tile tile = getQsTile();
 
         if (tile != null) {
-            tile.setLabel(getString(R.string.tile_light_label));
+            tile.setLabel(getString(R.string.tile_random_label));
 
-            if (!isAllowed || isRandomActive) {
+            if (!isAllowed || isGlyphActive) {
                 tile.setState(Tile.STATE_UNAVAILABLE);
 
                 if (isMeActive) {
-                    prefs.edit().putBoolean("is_glyph_active", false).apply();
-                    updateHardware(0);
+                    prefs.edit().putBoolean("is_random_active", false).apply();
+                    GlyphManager.setRandomEffect(false);
                 }
             } else {
                 tile.setState(isMeActive ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
             }
-
             tile.updateTile();
-        }
-    }
-
-    private void updateHardware(int val) {
-        for (GlyphManager.Glyph g : GlyphManager.Glyph.values()) {
-            GlyphManager.setBrightness(g, val);
         }
     }
 }

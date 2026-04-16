@@ -55,6 +55,17 @@
         </service>
 
         <service
+            android:name=".RandomGlyphTileService"
+            android:icon="@drawable/ic_random_glyphs"
+            android:label="Random Glyphs"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
             android:name=".FlipToGlyphService"
             android:enabled="true"
             android:exported="false" />
