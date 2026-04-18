@@ -44,9 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView textCurrentCallStyle, textCurrentNotifStyle, textSleepTime;
     private MaterialSwitch switchSleepMode, switchAll, switchFlip, switchBattery, switchLockscreenOnly, switchVolume;
     private BrightnessSliderView slider;
-    private Runnable previewRunnable;
-    private ImageView spacewar;
-
     private final SharedPreferences.OnSharedPreferenceChangeListener rootPrefListener = (sharedPrefs, key) -> {
         if ("master_allow".equals(key)) {
             boolean newValue = sharedPrefs.getBoolean("master_allow", false);
@@ -59,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     };
+    private Runnable previewRunnable;
+    private ImageView spacewar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,11 +141,36 @@ public class MainActivity extends AppCompatActivity {
         switchSleepMode.setChecked(prefs.getBoolean("sleep_mode_enabled", false));
         switchBattery.setChecked(prefs.getBoolean("battery_glyph_enabled", false));
         switchVolume.setChecked(prefs.getBoolean("volume_glyph_enabled", false));
+        applyDefaultStylesIfNeeded();
         updateStyleLabels();
         updateSleepTimeLabel();
         slider.setValue(mapBrightnessToPosition(currentBrightness));
         updateOutlineAlpha(slider.getValue());
         updateCardStates(isMasterAllowed);
+    }
+
+    private void applyDefaultStylesIfNeeded() {
+        SharedPreferences.Editor editor = prefs.edit();
+        boolean changed = false;
+
+        if (!prefs.contains(PREF_BLINK_STYLE) && notifStyleValues.length > 0) {
+            editor.putString(PREF_BLINK_STYLE, notifStyleValues[0]);
+            editor.putInt("glyph_blink_style_idx", 0);
+            changed = true;
+        }
+
+        if (!prefs.contains("call_style_value") && callStyleValues.length > 0) {
+            editor.putString("call_style_value", callStyleValues[0]);
+            editor.putInt("call_style_idx", 0);
+            changed = true;
+        }
+
+        if (!prefs.contains("flip_style_value") && notifStyleValues.length > 0) {
+            editor.putString("flip_style_value", notifStyleValues[0]);
+            editor.putInt("flip_style_idx", 0);
+            changed = true;
+        }
+        if (changed) editor.apply();
     }
 
     private void setupListeners() {

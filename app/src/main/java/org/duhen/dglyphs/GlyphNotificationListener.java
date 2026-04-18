@@ -1,6 +1,5 @@
 package org.duhen.dglyphs;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
@@ -13,17 +12,27 @@ public class GlyphNotificationListener extends NotificationListenerService {
 
         SharedPreferences prefs = getSharedPreferences(getString(R.string.pref_file), MODE_PRIVATE);
 
-        if (prefs.getBoolean("master_allow", false)) {
+        if (!prefs.getBoolean("master_allow", false)) return;
+        if (SleepGuard.isBlocked(prefs)) return;
+        if (prefs.getBoolean("lockscreen_only", false) && GlyphManager.isUserActive(this)) return;
 
-            if (SleepGuard.isBlocked(prefs)) return;
-
-            if (prefs.getBoolean("lockscreen_only", false) && GlyphManager.isUserActive(this)) {
+        String style = prefs.getString(MainActivity.PREF_BLINK_STYLE, null);
+        if (style == null || style.isEmpty()) {
+            try {
+                String[] files = getAssets().list("notification");
+                if (files == null || files.length == 0) return;
+                for (String f : files) {
+                    if (f.endsWith(".csv")) {
+                        style = f.replace(".csv", "");
+                        break;
+                    }
+                }
+            } catch (Exception e) {
                 return;
             }
-
-            Intent intent = new Intent(this, FlipToGlyphService.class);
-            intent.setAction(FlipToGlyphService.ACTION_NOTIFICATION_GLYPH);
-            startService(intent);
         }
+        int brightness = prefs.getInt("brightness", 2048);
+        android.os.Vibrator vibrator = getSystemService(android.os.Vibrator.class);
+        GlyphEffects.play(this, "notification", style, vibrator, brightness);
     }
 }
