@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace 'org.duhen.dglyphs'
+    namespace 'org.aspends.nglyphs'
     compileSdk {
         version = release(36)
     }

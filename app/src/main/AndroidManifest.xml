@@ -1,5 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -7,20 +11,30 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DGlyphs"
-        android:enableOnBackInvokedCallback="true">
+        android:persistent="true"
+        android:theme="@style/Theme.NGlyphs">
+
+        <meta-data android:name="NothingKey" android:value="test"/>
 
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -28,12 +42,45 @@
         </activity>
 
         <activity
-            android:name=".SleepModeActivity"
+            android:name=".ui.SleepModeActivity"
             android:exported="false"
-            android:theme="@style/Theme.DGlyphs" />
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.NGlyphs" />
+
+        <activity
+            android:name=".ui.EssentialLightsActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.NGlyphs" />
+
+        <activity
+            android:name=".ui.StyleSelectionActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.NGlyphs" />
+
+        <activity
+            android:name=".ui.GlyphConverterActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:label="Glyph Converter"
+            android:theme="@style/Theme.NGlyphs" />
+
+        <activity
+            android:name=".ui.TileSliderActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:theme="@style/Theme.NGlyphs.Dialog">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
+            </intent-filter>
+        </activity>
 
         <service
-            android:name=".MasterTileService"
+            android:name=".services.MasterTileService"
             android:icon="@drawable/ic_master_qs"
             android:label="@string/tile_master_label"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
@@ -44,7 +91,7 @@
         </service>
 
         <service
-            android:name=".GlyphTileService"
+            android:name=".services.GlyphTileService"
             android:icon="@drawable/ic_flashlight_qs"
             android:label="@string/tile_light_label"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
@@ -55,24 +102,17 @@
         </service>
 
         <service
-            android:name=".RandomGlyphTileService"
-            android:icon="@drawable/ic_random_glyphs"
-            android:label="Random Glyphs"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
+            android:name=".services.FlipToGlyphService"
+            android:enabled="true"
+            android:exported="false"
+            android:stopWithTask="false"
+            android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="glyph_hardware_control" />
         </service>
 
         <service
-            android:name=".FlipToGlyphService"
-            android:enabled="true"
-            android:exported="false" />
-
-        <service
-            android:name=".GlyphNotificationListener"
-            android:label="dGlyphs Notification Listener"
+            android:name=".services.GlyphNotificationListener"
+            android:label="NGlyph Notification Listener"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
             android:exported="true">
             <intent-filter>
@@ -80,23 +120,36 @@
             </intent-filter>
         </service>
 
-        <service android:name=".BatteryGlyphService" />
-
-        <service android:name=".VolumeGlyphService" />
-
         <receiver
-            android:name=".BootReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
-        <receiver
-            android:name=".CallReceiver"
+            android:name=".receivers.CallReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".services.BatteryGlyphService" android:exported="false" android:stopWithTask="false" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="glyph_hardware_control" />
+        </service>
+        <service android:name=".services.ShakeToGlyphService" android:exported="false" android:stopWithTask="false" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="glyph_hardware_control" />
+        </service>
+        <service android:name=".services.VolumeObserverService" android:exported="false" android:stopWithTask="false" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="glyph_hardware_control" />
+        </service>
+
+        <service android:name=".services.AutoBrightnessService" android:exported="false" android:stopWithTask="false" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="glyph_hardware_control" />
+        </service>
+        
+        <service android:name=".services.AudioVisualizerService" android:exported="false" android:stopWithTask="false" android:foregroundServiceType="specialUse">
+            <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="glyph_hardware_control" />
+        </service>
+
+        <receiver android:name=".receivers.BootCompletedReceiver" android:exported="true" android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
